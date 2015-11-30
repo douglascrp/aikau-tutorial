@@ -1,11 +1,20 @@
 model.jsonModel = {
    services: [
-      "alfresco/services/NavigationService",
-      "alfresco/services/LogoutService",
-      "alfresco/services/DocumentService",
-      "alfresco/services/ActionService",
-      "alfresco/services/UploadService"
-      // Add more services here !!!
+        {
+            name: "alfresco/services/LoggingService",
+            config: {
+                loggingPreferences: {
+                    enabled: true,
+                    all: true
+                }
+            }
+        },
+        "alfresco/services/NavigationService",
+        "alfresco/services/LogoutService",
+        "alfresco/services/DocumentService",
+        "alfresco/services/ActionService",
+        "alfresco/services/UploadService"
+        // Add more services here !!!
    ],
    widgets: [
       {
