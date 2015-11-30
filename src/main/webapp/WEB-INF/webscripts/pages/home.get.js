@@ -5,7 +5,8 @@ model.jsonModel = {
             config: {
                 loggingPreferences: {
                     enabled: true,
-                    all: true
+                    all: true,
+                    filter: "tutorial/HelloWorld(.*)"
                 }
             }
         },
@@ -78,6 +79,9 @@ model.jsonModel = {
                             }
                         ]
                     }
+               },
+               {
+                    name: "alfresco/logging/SubscriptionLog"
                }
                // Add more widgets here !!!
             ]
