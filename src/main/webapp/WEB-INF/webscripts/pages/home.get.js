@@ -61,6 +61,31 @@ model.jsonModel = {
                     name: "tutorial/HelloWorld"
                },
                {
+                    name: "tutorial/Label"
+               },
+               {
+                    name: "tutorial/Label",
+                    config: {
+                        label: "Good Morning",
+                        additionalCssClasses: "bold"
+                    }
+               },
+               {
+                    name: "tutorial/Label",
+                    config: {
+                        additionalCssClasses: "large",
+                        widgets: [
+                            {
+                                name: "alfresco/html/Label",
+                                config: {
+                                    label: "<< {label} >>",
+                                    additionalCssClasses: "bold {additionalCssClasses}"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
                     name: "alfresco/buttons/AlfButton",
                     config: {
                         label: "Go to parent folder",
