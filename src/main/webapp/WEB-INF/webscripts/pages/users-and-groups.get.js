@@ -2,7 +2,8 @@ model.jsonModel = {
     services: [
         "alfresco/services/CrudService",
         "alfresco/services/DialogService",
-        "tutorial/UserAndGroupService"
+        "tutorial/UserAndGroupService",
+        "alfresco/services/OptionsService"
     ],
     widgets: [
         {
@@ -70,9 +71,90 @@ model.jsonModel = {
                                                 config: {
                                                     widgets: [
                                                         {
-                                                            name: "alfresco/renderers/Property",
+                                                            name: "alfresco/renderers/PropertyLink",
                                                             config: {
-                                                                propertyToRender: "displayName"
+                                                                propertyToRender: "displayName",
+                                                                useCurrentItemAsPayload: false,
+                                                                publishTopic: "ALF_CREATE_DIALOG_REQUEST",
+                                                                publishPayloadType: "PROCESS",
+                                                                publishPayloadModifiers: ["processCurrentItemTokens"],
+                                                                publishPayload: {
+                                                                    dialogTitle: "{displayName}",
+                                                                    fixedWidth: true,
+                                                                    widgetsContent: [
+                                                                        {
+                                                                            name: "alfresco/forms/Form",
+                                                                            config: {
+                                                                                okButtonLabel: "Add User",
+                                                                                okButtonPublishTopic: "TUTORIAL_ADD_USER_TO_GROUP",
+                                                                                okButtonPublishPayload: {
+                                                                                    groupId: "{shortName}"
+                                                                                },
+                                                                                okButtonPublishGlobal: true,
+                                                                                showCancelButton: false,
+                                                                                widgets: [
+                                                                                    {
+                                                                                        name: "alfresco/forms/controls/Select",
+                                                                                        config: {
+                                                                                            label: "User",
+                                                                                            description: "Select a user to add to the group",
+                                                                                            name: "userName",
+                                                                                            optionsConfig: {
+                                                                                                publishTopic: "ALF_GET_FORM_CONTROL_OPTIONS",
+                                                                                                publishPayload: {
+                                                                                                    url: url.context + "/proxy/alfresco/api/people?filter=",
+                                                                                                    itemsAttribute: "people",
+                                                                                                    labelAttribute: "userName",
+                                                                                                    valueAttribute: "userName"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            name: "alfresco/lists/AlfList",
+                                                                            config: {
+                                                                                waitForPageWidgets: false,
+                                                                                loadDataPublishTopic: "ALF_CRUD_GET_ALL",
+                                                                                loadDataPublishPayload: {
+                                                                                    url: "api/groups/{shortName}/children?sortBy=displayName&maxItems=50&skipCount=0"
+                                                                                },
+                                                                                itemsProperty: "data",
+                                                                                widgets: [
+                                                                                    {
+                                                                                        name: "alfresco/documentlibrary/views/AlfDocumentListView",
+                                                                                        config: {
+                                                                                            widgets: [
+                                                                                                {
+                                                                                                    name: "alfresco/lists/views/layouts/Row",
+                                                                                                    config: {
+                                                                                                        widgets: [
+                                                                                                            {
+                                                                                                                name: "alfresco/lists/views/layouts/Cell",
+                                                                                                                config: {
+                                                                                                                    widgets: [
+                                                                                                                        {
+                                                                                                                            name: "alfresco/renderers/Property",
+                                                                                                                            config: {
+                                                                                                                                propertyToRender: "displayName"
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
                                                             }
                                                         }
                                                     ]
