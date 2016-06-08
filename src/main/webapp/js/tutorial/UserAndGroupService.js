@@ -25,13 +25,20 @@ define(["dojo/_base/declare",
                 },
 
                 onSuccess: function tutorial_UserAndGroupService__onSuccess(response, originalRequestConfig) {
-                    this.alfPublish("ALF_DOCLIST_RELOAD_DATA", {});
+                    var pubSubScope = lang.getObject("data.pubSubScope", false, originalRequestConfig);
+                    if (pubSubScope == null) {
+                        pubSubScope = "";
+                    }
+                    this.alfPublish(pubSubScope + "ALF_DOCLIST_RELOAD_DATA", {});
                 },
 
                 addUserToGroup: function tutorial_UserAndGroupService__addUserToGroup(payload) {
                     this.serviceXhr({
                         url: AlfConstants.PROXY_URI + "api/groups/" + payload.groupId + "/children/" + payload.userName,
                         method: "POST",
+                        data: {
+                            pubSubScope: payload.pubSubScope
+                        },
                         successCallback: this.onSuccess,
                         callbackScope: this
                     });

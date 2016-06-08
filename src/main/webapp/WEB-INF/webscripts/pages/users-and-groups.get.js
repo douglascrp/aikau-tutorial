@@ -1,3 +1,18 @@
+var options = [];
+var result = remote.call("/api/people?filter=");
+if (result.status.code == status.STATUS_OK) {
+    var rawData = JSON.parse(result);
+    if (rawData && rawData.people) {
+        var people = rawData.people;
+        for (var i = 0; i < people.length; i++) {
+            options.push({
+                value: people[i].userName,
+                label: people[i].firstName + " " + people[i].lastName
+            });
+        }
+    }
+}
+
 model.jsonModel = {
     services: [
         "alfresco/services/CrudService",
@@ -88,7 +103,8 @@ model.jsonModel = {
                                                                                 okButtonLabel: "Add User",
                                                                                 okButtonPublishTopic: "TUTORIAL_ADD_USER_TO_GROUP",
                                                                                 okButtonPublishPayload: {
-                                                                                    groupId: "{shortName}"
+                                                                                    groupId: "{shortName}",
+                                                                                    pubSubScope: "GROUP_USERS_"
                                                                                 },
                                                                                 okButtonPublishGlobal: true,
                                                                                 showCancelButton: false,
@@ -100,13 +116,7 @@ model.jsonModel = {
                                                                                             description: "Select a user to add to the group",
                                                                                             name: "userName",
                                                                                             optionsConfig: {
-                                                                                                publishTopic: "ALF_GET_FORM_CONTROL_OPTIONS",
-                                                                                                publishPayload: {
-                                                                                                    url: url.context + "/proxy/alfresco/api/people?filter=",
-                                                                                                    itemsAttribute: "people",
-                                                                                                    labelAttribute: "userName",
-                                                                                                    valueAttribute: "userName"
-                                                                                                }
+                                                                                                fixed: options
                                                                                             }
                                                                                         }
                                                                                     }
@@ -116,6 +126,7 @@ model.jsonModel = {
                                                                         {
                                                                             name: "alfresco/lists/AlfList",
                                                                             config: {
+                                                                                pubSubScope: "GROUP_USERS_",
                                                                                 waitForPageWidgets: false,
                                                                                 loadDataPublishTopic: "ALF_CRUD_GET_ALL",
                                                                                 loadDataPublishPayload: {
