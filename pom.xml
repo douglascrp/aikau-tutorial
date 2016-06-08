@@ -24,17 +24,17 @@
       <dependency>
          <groupId>org.alfresco</groupId>
          <artifactId>aikau</artifactId>
-         <version>1.0.53</version>
+         <version>1.0.70</version>
       </dependency>
       <dependency>
-         <groupId>org.springframework.extensions.surf</groupId>
+         <groupId>org.alfresco.surf</groupId>
          <artifactId>spring-surf</artifactId>
-         <version>5.0.d</version>
+         <version>6.3</version>
       </dependency>
       <dependency>
-         <groupId>org.springframework.extensions.surf</groupId>
+         <groupId>org.alfresco.surf</groupId>
          <artifactId>spring-surf-api</artifactId>
-         <version>5.0.d</version>
+         <version>6.3</version>
       </dependency>
       <dependency>
          <groupId>org.tuckey</groupId>
