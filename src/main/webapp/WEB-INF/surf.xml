@@ -91,7 +91,7 @@
 
             <!-- This option should ONLY be set to true during development. In production this will need to be reset to 
                  false to ensure optimum performance -->
-            <disable-resource-caching>false</disable-resource-caching>
+            <disable-resource-caching>true</disable-resource-caching>
 
             <!-- This ensures that modules (including the Aikau modules) can auto-deploy -->
             <module-deployment>
