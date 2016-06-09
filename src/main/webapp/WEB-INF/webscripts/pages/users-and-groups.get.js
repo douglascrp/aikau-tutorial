@@ -154,6 +154,26 @@ model.jsonModel = {
                                                                                                                         }
                                                                                                                     ]
                                                                                                                 }
+                                                                                                            },
+                                                                                                            {
+                                                                                                                name: "alfresco/lists/views/layouts/Cell",
+                                                                                                                config: {
+                                                                                                                    widgets: [
+                                                                                                                        {
+                                                                                                                            name: "alfresco/renderers/PublishAction",
+                                                                                                                            config: {
+                                                                                                                                iconClass: "delete-16",
+                                                                                                                                publishTopic: "TUTORIAL_REMOVE_USER_FROM_GROUP",
+                                                                                                                                publishPayload: {
+                                                                                                                                    pubSubScope: "GROUP_USERS_",
+                                                                                                                                    groupId: "{shortName}"
+                                                                                                                                },
+                                                                                                                                publishPayloadItemMixin: true,
+                                                                                                                                publishGlobal: true
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
                                                                                                             }
                                                                                                         ]
                                                                                                     }
@@ -166,6 +186,29 @@ model.jsonModel = {
                                                                         }
                                                                     ]
                                                                 }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                name: "alfresco/lists/views/layouts/Cell",
+                                                config: {
+                                                    widgets: [
+                                                        {
+                                                            name: "alfresco/renderers/PublishAction",
+                                                            config: {
+                                                                iconClass: "delete-16",
+                                                                publishTopic: "ALF_CRUD_DELETE",
+                                                                publishPayloadType: "PROCESS",
+                                                                publishPayloadModifiers: ["processCurrentItemTokens"],
+                                                                publishPayload: {
+                                                                    url: "api/groups/{shortName}",
+                                                                    requiresConfirmation: true,
+                                                                    confirmationTitle: "Delete {displayName}?",
+                                                                    confirmationPrompt: "Are you sure you want to delete {displayName}?"
+                                                                },
+                                                                publishGlobal: true
                                                             }
                                                         }
                                                     ]

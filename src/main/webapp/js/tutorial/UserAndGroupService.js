@@ -10,6 +10,7 @@ define(["dojo/_base/declare",
                     lang.mixin(this, args);
                     this.alfSubscribe("TUTORIAL_CREATE_GROUP", lang.hitch(this, this.createGroup));
                     this.alfSubscribe("TUTORIAL_ADD_USER_TO_GROUP", lang.hitch(this, this.addUserToGroup));
+                    this.alfSubscribe("TUTORIAL_REMOVE_USER_FROM_GROUP", lang.hitch(this, "removeUserFromGroup"));
                 },
 
                 createGroup: function tutorial_UserAndGroupService__createGroup(payload) {
@@ -42,6 +43,20 @@ define(["dojo/_base/declare",
                         successCallback: this.onSuccess,
                         callbackScope: this
                     });
+                },
+
+                removeUserFromGroup: function tutorial_UserAndGroupService__removeUserFromGroup(payload) {
+                    this.serviceXhr(
+                        {
+                            url: AlfConstants.PROXY_URI + "api/groups/" + payload.groupId + "/children/" + payload.shortName,
+                            method: "DELETE",
+                            data: {
+                                pubSubScope: payload.pubSubScope
+                            },
+                            successCallback: this.onSuccess,
+                            callbackScope: this
+                        }
+                    );
                 }
             });
         });
