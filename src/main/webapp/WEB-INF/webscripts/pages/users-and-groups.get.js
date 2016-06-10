@@ -70,6 +70,9 @@ model.jsonModel = {
                 loadDataPublishTopic: "TUTORIAL_GET_GROUPS",
                 sortField: "shortName",
                 itemsProperty: "data",
+                currentPageSize: 5,
+                startIndexProperty: "paging.skipCount",
+                totalResultsProperty: "paging.totalItems",
                 widgets: [
                     {
                         name: "alfresco/lists/views/AlfListView",

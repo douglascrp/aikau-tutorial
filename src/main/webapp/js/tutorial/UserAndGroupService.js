@@ -67,9 +67,16 @@ define(["dojo/_base/declare",
 
                     var sortField = (payload.sortField != null) ? payload.sortField : "shortName";
 
+                    var pageNo = (payload.page != null) ? payload.page : 1;
+                    var pageSize = (payload.pageSize != null) ? payload.pageSize : 25;
+                    var skipCount = (pageNo - 1) * pageSize;
+
                     this.serviceXhr(
                         {
-                            url: AlfConstants.PROXY_URI + "api/groups?dir=" + sortDir + "&sortBy=" + sortField + "&zone=APP.DEFAULT&maxItems=50&skipCount=0",
+                            url: AlfConstants.PROXY_URI + "api/groups?dir=" + sortDir +
+                                "&sortBy=" + sortField +
+                                "&zone=APP.DEFAULT&maxItems=" + pageSize +
+                                "&skipCount=" + skipCount,
                             method: "GET",
                             alfTopic: alfTopic
                         }
