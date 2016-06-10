@@ -32,6 +32,7 @@ model.jsonModel = {
                         name: "alfresco/menus/AlfMenuBarItem",
                         config: {
                             label: "Create New Group",
+                            iconClass: "alf-create-icon",
                             publishTopic: "ALF_CREATE_FORM_DIALOG_REQUEST",
                             publishPayload: {
                                 dialogTitle: "Create Group",
@@ -86,6 +87,7 @@ model.jsonModel = {
                                                 name: "alfresco/menus/AlfSelectedItemsMenuItem",
                                                 config: {
                                                     label: "Delete",
+                                                    iconClass: "alf-delete-icon",
                                                     clearSelectedItemsOnClick: true,
                                                     publishTopic: "TUTORIAL_DELETE_GROUPS"
                                                 }
