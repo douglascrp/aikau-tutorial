@@ -2,8 +2,10 @@ define(["dojo/_base/declare",
         "alfresco/core/Core",
         "dojo/_base/lang",
         "alfresco/core/CoreXhr",
-        "service/constants/Default"],
-        function(declare, Core, lang, CoreXhr, AlfConstants) {
+        "service/constants/Default",
+        "dojo/_base/array",
+        "alfresco/dialogs/AlfDialog"],
+        function(declare, Core, lang, CoreXhr, AlfConstants, array, AlfDialog) {
 
             return declare([Core, CoreXhr], {
                 constructor: function tutorial_UserAndGroupService__constructor(args) {
@@ -12,6 +14,7 @@ define(["dojo/_base/declare",
                     this.alfSubscribe("TUTORIAL_ADD_USER_TO_GROUP", lang.hitch(this, this.addUserToGroup));
                     this.alfSubscribe("TUTORIAL_REMOVE_USER_FROM_GROUP", lang.hitch(this, "removeUserFromGroup"));
                     this.alfSubscribe("TUTORIAL_GET_GROUPS", lang.hitch(this, this.getGroups));
+                    this.alfSubscribe("TUTORIAL_DELETE_GROUPS", lang.hitch(this, this.deleteGroups));
                 },
 
                 createGroup: function tutorial_UserAndGroupService__createGroup(payload) {
@@ -79,6 +82,60 @@ define(["dojo/_base/declare",
                                 "&skipCount=" + skipCount,
                             method: "GET",
                             alfTopic: alfTopic
+                        }
+                    );
+                },
+
+                deleteGroupsConfirmation: function tutorial_UserAndGroupService__deleteGroupsConfirmation(payload) {
+                    this.alfUnsubscribe(this._deleteHandle);
+
+                    var groupsToDelete = payload.selectedItems;
+                    if (groupsToDelete != null) {
+                        array.forEach(groupsToDelete, lang.hitch(this, this.deleteGroup));
+                    }
+                },
+
+                deleteGroups: function tutorial_UserAndGroupService__deleteGroups(payload) {
+                    var responseTopic = this.generateUuid();
+                    this._deleteHandle = this.alfSubscribe(responseTopic, lang.hitch(this, this.deleteGroupsConfirmation));
+
+                    var dialog = new AlfDialog(
+                        {
+                            generatePubSubScope: false,
+                            title: "Delete Groups",
+                            textContent: "Are you sure you want to delete the selected groups?",
+                            widgetsButtons: [
+                                {
+                                    name: "alfresco/buttons/AlfButton",
+                                    config: {
+                                        label: "Yes",
+                                        publishTopic: responseTopic,
+                                        publishPayload: lang.clone(payload)
+                                    }
+                                },
+                                {
+                                    name: "alfresco/buttons/AlfButton",
+                                    config: {
+                                        label: "No",
+                                        publishTopic: "NOOP"
+                                    }
+                                }
+                            ]
+                        }
+                    );
+                    dialog.show();
+                },
+
+                deleteGroup: function tutorial_UserAndGroupService__deleteGroup(payload) {
+                    this.serviceXhr(
+                        {
+                            url: AlfConstants.PROXY_URI + "api/groups/" + payload.shortName,
+                            method: "DELETE",
+                            data: {
+                                pubSubScope: payload.pubSubScope
+                            },
+                            successCallback: this.onSuccess,
+                            callbackScope: this
                         }
                     );
                 }
